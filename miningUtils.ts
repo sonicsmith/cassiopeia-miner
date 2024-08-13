@@ -2,11 +2,11 @@ import { encodeAbiParameters, keccak256 } from "viem";
 import { mintBlock } from "./tokenUtils";
 
 export const getHash = ({
-  account,
+  accountAddress,
   challengeNumber,
   nonce,
 }: {
-  account: `0x${string}`;
+  accountAddress: `0x${string}`;
   challengeNumber: `0x${string}`;
   nonce: bigint;
 }) => {
@@ -16,7 +16,7 @@ export const getHash = ({
       { name: "account", type: "address" },
       { name: "nonce", type: "uint256" },
     ],
-    [challengeNumber, account, nonce]
+    [challengeNumber, accountAddress, nonce]
   );
   const digest = keccak256(abiEncoded);
   return digest;
@@ -26,11 +26,11 @@ const SECOND = 1_000;
 const BLOCK_TIME = 30 * 60 * SECOND; // 30 minutes
 
 export const findHashForBlock = ({
-  account,
+  accountAddress,
   challengeNumber,
   miningTarget,
 }: {
-  account: `0x${string}`;
+  accountAddress: `0x${string}`;
   challengeNumber: `0x${string}`;
   miningTarget: bigint;
 }) => {
@@ -41,7 +41,7 @@ export const findHashForBlock = ({
 
   while (timeSpent < BLOCK_TIME) {
     hash = getHash({
-      account,
+      accountAddress,
       challengeNumber,
       nonce,
     });
@@ -53,13 +53,10 @@ export const findHashForBlock = ({
     }
 
     timeSpent = Date.now() - startTime;
-    // if (timeSpent % (5 * SECOND) === 0) {
-    //   console.log("Nonce:", nonce.toString());
-    // }
   }
 
   if (timeSpent < BLOCK_TIME) {
-    console.log({ nonce, hash });
+    console.log("Block found:", { nonce, hash });
     return mintBlock({ nonce, hash });
   } else {
     return null;

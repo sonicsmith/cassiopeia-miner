@@ -9,11 +9,11 @@ There is no optimization to the hashing algorithm so it runs very slow.
 
 The next iteration of this project will create a GPU and CPU accelerated hash cycle.
 
-### Setup
+### Requirements
 
-```shell
-$ npm i
-```
+An account on Base with enough ETH to cover the gas for minting.
+
+### Setup
 
 Fill in needed environment variables:
 
@@ -21,9 +21,9 @@ Fill in needed environment variables:
 $ cp .env.example .env
 ```
 
-### Requirements
-
-An account on Base with enough gas to cover the mint.
+```shell
+$ npm i
+```
 
 ### Run
 
