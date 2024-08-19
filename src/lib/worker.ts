@@ -63,7 +63,7 @@ export const findHashForBlock = ({
   challengeNumber: `0x${string}`;
   miningTarget: bigint;
 }) => {
-  let nonce = 15682091n; //BigInt(0);
+  let nonce = 0n;
   const startTime = Date.now();
   let timeSpent = 0;
   let hash: `0x${string}` = `0x0`;

@@ -12,6 +12,7 @@ export const useMintToken = () => {
     nonce: bigint;
     hash: `0x${string}`;
   }) => {
+    console.log("Minting token with nonce and hash:", nonce, hash);
     writeContract({
       abi: parseAbi([
         "function mint(uint256 nonce, bytes32 challengeDigest) public returns (bool success)",

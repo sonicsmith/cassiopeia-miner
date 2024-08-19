@@ -27,7 +27,7 @@ export const MiningPanel = () => {
       console.log("Received result from worker:", event.data);
       const miningResult: MiningResult = event.data;
       if (miningResult?.hash) {
-        mintToken(miningResult);
+        // mintToken(miningResult);
         setResult(event.data);
       }
     };
@@ -70,7 +70,7 @@ export const MiningPanel = () => {
     }
   };
 
-  console.log("Result", result);
+  console.log("Mining Result", result);
 
   console.log("ETH Balance", ethBalance);
 
@@ -95,15 +95,17 @@ export const MiningPanel = () => {
       <div className="pt-16 w-full">{mining && <MiningAnimation />}</div>
       {result && !mining && (
         <div className="m-auto">
-          <p className="font-bold text-lg mb-3">Found Solution!</p>
-          <p>
-            <div className="font-bold">Hash:</div> {result.hash}
-          </p>
-          <p>
+          <div className="font-bold text-lg mb-3">Found Solution!</div>
+          <div className="font-bold">Hash:</div> {result.hash}
+          <div>
             <div className="font-bold">Nonce:</div>
             {result.nonce.toString()}
-          </p>
-          <Button onClick={mintTokenWithHash} className="mt-4">
+          </div>
+          <Button
+            onClick={mintTokenWithHash}
+            className="mt-4"
+            variant={"destructive"}
+          >
             Mint Token
           </Button>
         </div>

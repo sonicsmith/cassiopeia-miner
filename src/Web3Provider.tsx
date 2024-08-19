@@ -11,10 +11,8 @@ if (!walletConnectProjectId) {
 
 const config = createConfig(
   getDefaultConfig({
-    // Your dApps chains
     chains: [base],
     transports: {
-      // RPC URL for each chain
       [base.id]: http(),
     },
     walletConnectProjectId,
