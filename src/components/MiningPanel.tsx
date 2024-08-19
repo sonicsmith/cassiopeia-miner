@@ -17,7 +17,7 @@ export const MiningPanel = () => {
   const [worker, setWorker] = useState<Worker | null>(null);
   const [result, setResult] = useState<MiningResult>(null);
   const [mining, setMining] = useState(false);
-  const [minting, setMinting] = useState(true);
+  const [minting, setMinting] = useState(false);
 
   const { mintToken, status, data, error } = useMintToken();
   console.log("useMintToken", { status, data, error });
@@ -54,6 +54,9 @@ export const MiningPanel = () => {
   useEffect(() => {
     if (status === "success" && data) {
       window.location.href = `https://basescan.org/tx/${data}`;
+    }
+    if (status === "error") {
+      setMinting(false);
     }
   }, [data]);
 
