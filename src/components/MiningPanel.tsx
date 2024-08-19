@@ -3,6 +3,7 @@ import { ConnectKitButton } from "connectkit";
 import { useAccount, useBalance } from "wagmi";
 import { Button } from "./ui/button";
 import { MiningAnimation } from "./MiningAnimation";
+import { Loader2 } from "lucide-react";
 
 import MiningWorker from "./../lib/worker?worker";
 import { useMintToken } from "../hooks/useMintToken";
@@ -16,6 +17,7 @@ export const MiningPanel = () => {
   const [worker, setWorker] = useState<Worker | null>(null);
   const [result, setResult] = useState<MiningResult>(null);
   const [mining, setMining] = useState(false);
+  const [minting, setMinting] = useState(false);
 
   const { mintToken, status, data, error } = useMintToken();
   console.log("useMintToken", { status, data, error });
@@ -27,7 +29,6 @@ export const MiningPanel = () => {
       console.log("Received result from worker:", event.data);
       const miningResult: MiningResult = event.data;
       if (miningResult?.hash) {
-        // mintToken(miningResult);
         setResult(event.data);
       }
     };
@@ -48,10 +49,20 @@ export const MiningPanel = () => {
       return false;
     }
     return true;
-  }, []);
+  }, [ethBalance.data]);
+
+  useEffect(() => {
+    if (status === "success" && data) {
+      window.location.href = `https://basescan.org/tx/${data}`;
+    }
+    if (status === "error") {
+      setMinting(false);
+    }
+  }, [data, status]);
 
   const mintTokenWithHash = () => {
     if (result) {
+      setMinting(true);
       mintToken(result);
     }
   };
@@ -71,7 +82,6 @@ export const MiningPanel = () => {
   };
 
   console.log("Mining Result", result);
-
   console.log("ETH Balance", ethBalance);
 
   return (
@@ -105,8 +115,10 @@ export const MiningPanel = () => {
             onClick={mintTokenWithHash}
             className="mt-4"
             variant={"destructive"}
+            disabled={minting}
           >
-            Mint Token
+            {minting && <Loader2 className="animate-spin w-5 h-5 mr-2" />}
+            {minting ? "Minting" : "Mint Token"}
           </Button>
         </div>
       )}
