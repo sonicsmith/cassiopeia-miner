@@ -49,7 +49,7 @@ export const MiningPanel = () => {
       return false;
     }
     return true;
-  }, []);
+  }, [ethBalance.data]);
 
   useEffect(() => {
     if (status === "success" && data) {
@@ -58,7 +58,7 @@ export const MiningPanel = () => {
     if (status === "error") {
       setMinting(false);
     }
-  }, [data]);
+  }, [data, status]);
 
   const mintTokenWithHash = () => {
     if (result) {
