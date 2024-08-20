@@ -146,7 +146,7 @@ export const MiningPanel = () => {
           <p>We recommend at least 0.000005 to cover gas.</p>
         </div>
       )}
-      {chainId !== 8453 && (
+      {address && chainId !== 8453 && (
         <div className="mt-12 border rounded-xl bg-red-100 w-fit p-4 m-auto">
           <span className="font-serif mr-2">⚠️</span>
           Switch to Base Network
