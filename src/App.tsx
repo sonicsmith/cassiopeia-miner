@@ -1,6 +1,7 @@
 import "./App.css";
 
 import { Web3Provider } from "./Web3Provider";
+import { InstructionalVideo } from "./components/InstructionalVideo";
 import { MiningPanel } from "./components/MiningPanel";
 
 function App() {
@@ -16,6 +17,9 @@ function App() {
         </a>
       </div>
       <MiningPanel />
+      <div className="mt-6">
+        <InstructionalVideo />
+      </div>
     </Web3Provider>
   );
 }
