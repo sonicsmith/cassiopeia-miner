@@ -110,11 +110,6 @@ const mineBlock = async (address: string) => {
 onmessage = async (event: MessageEvent) => {
   console.log("Received message:", event.data);
 
-  if (event.data === "stop") {
-    // TODO: How to stop mining?
-    return;
-  }
-
   const beginMining = async (address: string) => {
     console.log("Mining:");
     const result = await mineBlock(address);

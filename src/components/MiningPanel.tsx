@@ -38,7 +38,7 @@ export const MiningPanel = () => {
     };
   }, []);
 
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
 
   const ethBalance = useBalance({
     address,
@@ -71,7 +71,17 @@ export const MiningPanel = () => {
     if (worker && address) {
       if (mining) {
         console.log("Stopping mining...");
-        worker.postMessage("stop");
+        worker.terminate();
+        const _worker = new MiningWorker();
+        _worker.onmessage = (event) => {
+          setMining(false);
+          console.log("Received result from worker:", event.data);
+          const miningResult: MiningResult = event.data;
+          if (miningResult?.hash) {
+            setResult(event.data);
+          }
+        };
+        setWorker(_worker);
       } else {
         console.log("Starting mining...");
         setResult(null);
@@ -115,7 +125,7 @@ export const MiningPanel = () => {
             onClick={mintTokenWithHash}
             className="mt-4"
             variant={"destructive"}
-            disabled={minting}
+            disabled={minting ?? chainId !== 8453}
           >
             {minting && <Loader2 className="animate-spin w-5 h-5 mr-2" />}
             {minting ? "Minting" : "Mint Token"}
@@ -134,6 +144,12 @@ export const MiningPanel = () => {
           <span className="font-serif mr-2">⚠️</span>You only have{" "}
           {ethBalance.data?.formatted} ETH on Base.
           <p>We recommend at least 0.000005 to cover gas.</p>
+        </div>
+      )}
+      {chainId !== 8453 && (
+        <div className="mt-12 border rounded-xl bg-red-100 w-fit p-4 m-auto">
+          <span className="font-serif mr-2">⚠️</span>
+          Switch to Base Network
         </div>
       )}
     </div>
